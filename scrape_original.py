@@ -1,8 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
-import re
-
 url="https://www.osmania.ac.in/res07/20190318.jsp"
 
 headers={
@@ -15,34 +12,34 @@ headers={
 }
 
 c=requests.Session()
-
-
-rollno="245318737090"
-data={'mbstatus':'SEARCH','htno':rollno,'Submit.x':'32','Submit.y':'14'}
-res=c.post(url,data=data)
-s = BeautifulSoup(res.content, 'html.parser')
-#title=s.find_all('title')[0].get_text()
-#print(title)
-#subtitle=s.find_all('p')[0].get_text()
-#print(subtitle)
-#date=s.find_all('p')[1].get_text()
-#print(date)
-#subtitle2=s.find_all('td')[2].get_text()
-#print(subtitle2)
-#from array import *
-#subject=array('i',[1,2,3,4,5])
-
-
-#subject[i]=int(s.find_all('table')[1].find_all('tr')[8].find_all('td')[0].get_text())#typecasting subject to int from unicode for comparison
-#print(type(subject))
-#print(subject) 
-#title=s.find_all('table')[1].find_all('tr')[7].find_all('td')[0].get_text()
-#print(title)
-
-enter=input("enter the code no:")
-name=s.find_all('table')[1].find_all('tr')[8].find_all('td')[1].get_text()
-name=name.replace(u'\xa0', ' ').encode('utf-8')
-name=name.strip()
-title=[enter, name]
-for x in range(len(title)):
-	print title[x],
+rollno=input("enter roll no: ")
+enter = int(input('enter subject code: '))
+x=0
+while(x < 4):    
+    number = int(rollno)
+    #number = number + 1
+    rollno = str(number)
+    data={'mbstatus':'SEARCH','htno':rollno,'Submit.x':'32','Submit.y':'14'}
+    res=c.post(url,data=data)
+    s = BeautifulSoup(res.content, 'html.parser')
+    name = s.find_all('table')[0].find_all('tr')[6].find_all('td')[1].get_text()
+    z=8
+    while(z < 13):
+        subject = s.find_all('table')[1].find_all('tr')[z].find_all('td')[0].get_text()
+        if int(subject) == enter:
+         grade = s.find_all('table')[1].find_all('tr')[z].find_all('td')[3].get_text()
+         gradez = s.find_all('table')[1].find_all('tr')[z].find_all('td')[4].get_text()
+         sbname = s.find_all('table')[1].find_all('tr')[z].find_all('td')[1].get_text()
+         credit =s.find_all('table')[1].find_all('tr')[z].find_all('td')[2].get_text()
+         print(rollno)
+         print(name)
+         print(subject)
+         print(sbname)
+         print(credit)
+         print(int(grade))
+         print(gradez)
+         z = z + 1   
+        else:
+         z = z + 1
+    x = x + 1
+    rollno = number + 1 
